@@ -6,7 +6,7 @@ urlpatterns = [
     # --- Comunidades ---
     # GET (listar), POST (crear)
     path('', ComunidadController.as_view()), 
-    # GET (específica), PUT (actualizar)
+    # GET (específica), DELETE(borrar), PUT (actualizar)
     path('<int:idComunidad>/', ComunidadController.as_view())
     
 ]

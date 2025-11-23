@@ -69,4 +69,20 @@ class ComunidadController(APIView):
         except Exception as e:
             traceback.print_exc()
             return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+        
+
+    def delete(self, request, idComunidad=None):
+        """
+        Realiza DELETE comunidad/{idComunidad} (Borrar una comunidad existente)
+        """
+        if not idComunidad: # Si no se especifica idComunidad en la URL, salta una excepción
+            return Response({"error": "Falta idComunidad en la URL"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            # Se llama al DAO para eliminar la comunidad
+            ComunidadDAO.eliminar_comunidad(idComunidad)
+            return Response(status=status.HTTP_204_NO_CONTENT) # 204 = Éxito, sin respuesta
+        except Exception as e:
+            traceback.print_exc()
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
