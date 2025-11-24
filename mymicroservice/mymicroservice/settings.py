@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',  # <- para las APIs
+    'comunidades',     # <- aplicación principal
 ]
 
 MIDDLEWARE = [
@@ -120,3 +122,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# --- CONFIGURACIÓN DE MICROSERVICIOS EXTERNOS ---
+
+# URL Base del Microservicio de Usuarios
+# Si existe la variable de entorno la usa, si no, usa la de por defecto (localhost)
+USER_MICROSERVICE_URL = os.getenv('USER_MICROSERVICE_URL', 'http://127.0.0.1:3000/api/usuarios/')

@@ -1,5 +1,5 @@
 # GC02-GPS25_Comunidad
-Creación de la base de datos para la API de Comunidad de la aplicación UnderSounds. - GPS 25/26, Ing. Software
+Creación del la API y base de datos de Comunidades de la aplicación UnderSounds. - ASEE/GPS 25/26, Ing. Software
 
 **Microservicio de Comunidades (UnderSounds)**
 
@@ -26,8 +26,8 @@ Sigue estos pasos para clonar, instalar y ejecutar el servidor en tu máquina lo
 
 1.  Clona el repositorio (si no lo has hecho):
     ```bash
-    git clone https://github.com/jnogalesg/GC02-GPS25_Comunidad
-    cd GC02-GPS25_ComunidadBETA
+    git clone https://github.com/UniExtremadura/GC02-GPS25_Comunidad
+    cd GC02-GPS25_Comunidad
     ```
 
 2.  Crea un entorno virtual. Esto aísla las dependencias del proyecto.
