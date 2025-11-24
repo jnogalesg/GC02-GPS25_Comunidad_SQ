@@ -68,6 +68,20 @@ class MiembroDAO:
         
         # 2. Prepara cada DTO (esto hará múltiples llamadas al servicio de usuarios para recuperarlos a todos)
         return [MiembroDAO._to_dto(m) for m in miembros_models] 
+    
+    @staticmethod
+    def get_miembro_especifico(comunidad_id: str, usuario_id: str) -> MiembroDTO:
+        """
+        Busca un miembro específico dentro de una comunidad.
+        """
+        try:
+            # Usamos idComunidad_id para evitar el error de "must be instance"
+            miembro = ComunidadMiembros.objects.get(idComunidad_id=comunidad_id, idUsuario=usuario_id)
+            
+            # Convertimos el modelo encontrado a DTO
+            return MiembroDAO._to_dto(miembro)
+        except ComunidadMiembros.DoesNotExist:
+            raise Exception(f"El usuario {usuario_id} no existe o no pertenece a la comunidad {comunidad_id}.")
                     
     @staticmethod
     def add_miembro(comunidad: str, usuario: str):

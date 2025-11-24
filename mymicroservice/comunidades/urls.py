@@ -13,4 +13,6 @@ urlpatterns = [
     # --- Miembros --- 
     # GET (listar), POST (añadir)
     path('miembros/<int:idComunidad>/', MiembroController.as_view()),
+    # DELETE (borrar)
+    path('miembros/<int:idComunidad>/<int:idMiembro>/', MiembroController.as_view()),
 ]
