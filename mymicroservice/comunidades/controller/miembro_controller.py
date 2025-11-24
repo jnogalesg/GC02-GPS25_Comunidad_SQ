@@ -1,3 +1,4 @@
+import traceback
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -44,3 +45,19 @@ class MiembroController(APIView):
         except Exception as e:
             # Captura error si ya existe (restricción unique_together, id único para cada miembro en la comunidad)
             return Response({"error": f"El usuario ya es miembro o error: {e}"}, status=status.HTTP_409_CONFLICT)
+        
+    def delete(self, request, idComunidad=None, idMiembro=None):
+        """
+        Maneja DELETE /comunidad/miembros/<idComunidad>/<idMiembro>/
+        (Elimina a un miembro específico de una comunidad)
+        """
+        if not idMiembro:
+             return Response({"error": "Falta 'idMiembro' en la URL"}, status=status.HTTP_400_BAD_REQUEST)
+            
+        try:
+            # Llama al DAO 
+            MiembroDAO.eliminar_miembro(idComunidad, idMiembro)
+            return Response(status=status.HTTP_204_NO_CONTENT) # Éxito, sin respuesta
+        except Exception as e:
+            traceback.print_exc()
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)

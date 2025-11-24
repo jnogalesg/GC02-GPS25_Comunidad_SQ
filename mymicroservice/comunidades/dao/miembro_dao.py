@@ -102,3 +102,17 @@ class MiembroDAO:
             idUsuario=usuario
         )
         return MiembroDAO._to_dto(nuevo_miembro) # devolver el DTO del nuevo miembro añadido
+    
+    @staticmethod
+    def eliminar_miembro(comunidad: str, usuario: str):
+        """
+        Elimina a un miembro de una comunidad.
+        """
+        try:
+            # se busca el miembro de la comunidad que se quiere eliminar
+            miembro = ComunidadMiembros.objects.get(idComunidad_id=comunidad, idUsuario=usuario) # idComunidad_id para buscar por id directamente
+            # si se encuentra, se elimina el miembro de la comunidad
+            miembro.delete()
+            # No se devuelve nada, el Controller dará un 204
+        except ComunidadMiembros.DoesNotExist:  # si no se encuentra el miembro en la comunidad, salta una excepción
+            raise Exception(f"El usuario {usuario} no es miembro de la comunidad {comunidad}.")
