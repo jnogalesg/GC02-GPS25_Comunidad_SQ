@@ -14,7 +14,7 @@ class MiembroController(APIView):
         """
         try:
             if idMiembro:
-                # --- CASO 1: Miembro específico ---
+                # --- CASO 1: Miembro específico --- (comprueba si el miembro es parte de la comunidad)
                 miembro_dto = MiembroDAO.get_miembro_especifico(idComunidad, idMiembro)
                 return Response(dataclasses.asdict(miembro_dto), status=status.HTTP_200_OK)
             
