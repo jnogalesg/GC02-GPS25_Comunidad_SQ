@@ -1,20 +1,20 @@
-import traceback
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from comunidades.dao.miembro_dao import MiembroDAO
 import dataclasses 
+import traceback
 
 class MiembroController(APIView):
 
     def get(self, request, idComunidad=None, idMiembro=None):
         """
-        Maneja GET /comunidad/miembros/<idComunidad>/ (Todos los miembros de la comunidad)
-        y GET /comunidad/miembros/<idComunidad>/<idMiembro>/ (Miembro específico)
+        GET /comunidad/miembros/<idComunidad>/ (Todos los miembros de la comunidad)
+        GET /comunidad/miembros/<idComunidad>/<idMiembro>/ (Miembro específico)
         """
         try:
             if idMiembro:
-                # --- CASO 1: Miembro específico --- (comprueba si el miembro es parte de la comunidad)
+                # --- CASO 1: Miembro específico ---
                 miembro_dto = MiembroDAO.get_miembro_especifico(idComunidad, idMiembro)
                 return Response(dataclasses.asdict(miembro_dto), status=status.HTTP_200_OK)
             
@@ -29,10 +29,10 @@ class MiembroController(APIView):
 
     def post(self, request, idComunidad=None):
         """
-        Maneja POST /comunidad/miembros/<idComunidad>/
+        POST /comunidad/miembros/<idComunidad>/
         (Añade un usuario a esa comunidad)
         """
-
+        # (Idealmente, el id_usuario vendría del TOKEN de autenticación, pero por ahora, lo leemos del body para probar)
         idUsuario = request.data.get('idUsuario')
         if not idUsuario:
             return Response({"error": "Falta 'idUsuario' en el body"}, status=status.HTTP_400_BAD_REQUEST)
@@ -44,11 +44,11 @@ class MiembroController(APIView):
             return Response(dataclasses.asdict(nuevo_miembro_dto), status=status.HTTP_201_CREATED)
         except Exception as e:
             # Captura error si ya existe (restricción unique_together, id único para cada miembro en la comunidad)
-            return Response({"error": f"El usuario ya es miembro o error: {e}"}, status=status.HTTP_409_CONFLICT)
-        
+            return Response({"error": f"Error: {e}"}, status=status.HTTP_409_CONFLICT)
+
     def delete(self, request, idComunidad=None, idMiembro=None):
         """
-        Maneja DELETE /comunidad/miembros/<idComunidad>/<idMiembro>/
+        DELETE /comunidad/miembros/<idComunidad>/<idMiembro>/
         (Elimina a un miembro específico de una comunidad)
         """
         if not idMiembro:

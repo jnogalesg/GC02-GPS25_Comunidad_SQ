@@ -1,5 +1,5 @@
 from django.conf import settings
-from comunidades.models import ComunidadMiembros, PersonasVetadas
+from comunidades.models import ComunidadMiembros, PersonasVetadas, Comunidad
 from comunidades.dto.miembro_dto import MiembroDTO
 from typing import List
 from pyexpat import model
@@ -9,7 +9,7 @@ USER_SERVICE_URL = settings.USER_MICROSERVICE_URL
 
 class MiembroDAO:
     @staticmethod
-    def get_miembros(usuario: str) -> MiembroDTO:
+    def get_miembros(usuario: int) -> MiembroDTO:
         """
         # Llamada a la API de usuarios.
         Si falla o no encuentra al usuario, LANZA UNA EXCEPCIÓN.
@@ -59,7 +59,7 @@ class MiembroDAO:
         return MiembroDAO.get_miembros(idUsuario)
 
     @staticmethod
-    def get_miembros_comunidad(comunidad: str) -> List[MiembroDTO]:
+    def get_miembros_comunidad(comunidad: int) -> List[MiembroDTO]:
         """
         Devuelve la lista de miembros (DTOs) de una comunidad.
         """
@@ -68,23 +68,23 @@ class MiembroDAO:
         
         # 2. Prepara cada DTO (esto hará múltiples llamadas al servicio de usuarios para recuperarlos a todos)
         return [MiembroDAO._to_dto(m) for m in miembros_models] 
-    
+            
     @staticmethod
-    def get_miembro_especifico(comunidad_id: str, usuario_id: str) -> MiembroDTO:
+    def get_miembro_especifico(comunidad: int, usuario: int) -> MiembroDTO:
         """
         Busca un miembro específico dentro de una comunidad.
         """
         try:
             # Usamos idComunidad_id para evitar el error de "must be instance"
-            miembro = ComunidadMiembros.objects.get(idComunidad_id=comunidad_id, idUsuario=usuario_id)
+            miembro = ComunidadMiembros.objects.get(idComunidad_id=comunidad, idUsuario=usuario)
             
             # Convertimos el modelo encontrado a DTO
             return MiembroDAO._to_dto(miembro)
         except ComunidadMiembros.DoesNotExist:
-            raise Exception(f"El usuario {usuario_id} no existe o no pertenece a la comunidad {comunidad_id}.")
-                    
+            raise Exception(f"El usuario {usuario} no existe o no pertenece a la comunidad {comunidad}.")
+        
     @staticmethod
-    def add_miembro(comunidad: str, usuario: str):
+    def add_miembro(comunidad: int, usuario: int):
         """
         Añade un usuario a una comunidad.
         """
@@ -92,6 +92,10 @@ class MiembroDAO:
         # si ya existe el miembro en la comunidad, lanza una excepción
         if ComunidadMiembros.objects.filter(idComunidad=comunidad, idUsuario=usuario).exists():
             raise Exception("El usuario ya es miembro de la comunidad.")
+        
+        # si el usuario es el creador de la comunidad, lanza una excepción
+        if Comunidad.objects.filter(idComunidad=comunidad, idArtista=usuario).exists():
+            raise Exception("El usuario es el creador de la comunidad.")
         
         # si el miembro está vetado de la comunidad, lanza una excepción
         if PersonasVetadas.objects.filter(idComunidad=comunidad, idUsuario=usuario).exists():
@@ -102,9 +106,10 @@ class MiembroDAO:
             idUsuario=usuario
         )
         return MiembroDAO._to_dto(nuevo_miembro) # devolver el DTO del nuevo miembro añadido
-    
+
+        
     @staticmethod
-    def eliminar_miembro(comunidad: str, usuario: str):
+    def eliminar_miembro(comunidad: int, usuario: int):
         """
         Elimina a un miembro de una comunidad.
         """

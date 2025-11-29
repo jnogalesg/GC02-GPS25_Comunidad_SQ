@@ -24,19 +24,19 @@ class PublicacionDAO:
         )
 
     @staticmethod
-    def get_publicaciones_comunidad(idComunidad: str) -> List[PublicacionDTO]:
+    def get_publicaciones_comunidad(idComunidad: int) -> List[PublicacionDTO]:
         '''
         Devuelve una lista de las publicaciones de una comunidad específica.
         '''
         
         # se cuentan los me gusta únicamente en las publicaciones de esta comunidad
-        publicaciones = Publicacion.objects.filter(idComunidad=idComunidad).annotate(
+        publicaciones = Publicacion.objects.filter(idComunidad_id=idComunidad).annotate(
             num_megusta=Count('publicacionmegusta')
         )
         return [PublicacionDAO._to_dto(p) for p in publicaciones]
 
     @staticmethod
-    def get_publicacion_especifica(publicacion: str) -> PublicacionDTO:
+    def get_publicacion_especifica(publicacion: int) -> PublicacionDTO:
         """
         Devuelve una publicación específica por su ID.
         """
@@ -49,7 +49,7 @@ class PublicacionDAO:
             raise Exception(f"Publicación {publicacion} no encontrada")
 
     @staticmethod
-    def crear_publicacion(datos: dict, idComunidad: str) -> PublicacionDTO:
+    def crear_publicacion(datos: dict, idComunidad: int) -> PublicacionDTO:
         """
         Crea una nueva publicación en una comunidad específica.
         """
@@ -66,13 +66,13 @@ class PublicacionDAO:
         return PublicacionDAO._to_dto(nuevaPublicacion)
     
     @staticmethod
-    def actualizar_publicacion(id_publicacion: str, datos: dict) -> PublicacionDTO:
+    def actualizar_publicacion(publicacion: int, datos: dict) -> PublicacionDTO:
         """
         Actualiza parcialmente una publicación.
         """
         try:
             # 1. Buscamos la publicación
-            publicacion = Publicacion.objects.get(idPublicacion=id_publicacion)
+            publicacion = Publicacion.objects.get(idPublicacion=publicacion)
             
             # 2. Actualizamos SOLO los campos que vengan en el diccionario 'datos'
             # Usamos .get('campo', valor_actual) para no borrar lo que ya había si no envían ese campo.
@@ -87,10 +87,10 @@ class PublicacionDAO:
             return PublicacionDAO._to_dto(publicacion)
             
         except Publicacion.DoesNotExist:
-            raise Exception(f"Publicación {id_publicacion} no encontrada")
+            raise Exception(f"Publicación {publicacion} no encontrada")
     
     @staticmethod
-    def eliminar_publicacion(publicacion: str):
+    def eliminar_publicacion(publicacion: int):
         """
         Elimina una publicación específica por su ID.
         """

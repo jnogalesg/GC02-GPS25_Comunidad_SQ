@@ -4,14 +4,13 @@ from comunidades.models import Comunidad
 from comunidades.dto.comunidad_dto import ComunidadDTO
 from typing import List
 from comunidades.dto.artista_dto import ArtistaDTO
-from comunidades.dto.genero_dto import GeneroDTO
 
 USER_SERVICE_URL = settings.USER_MICROSERVICE_URL
 
 class ComunidadDAO:
        
     @staticmethod 
-    def get_artista(artista: str) -> ArtistaDTO:
+    def get_artista(artista: int) -> ArtistaDTO:
         """
         # Esta función realiza la llamada al microservicio de usuarios para obtener al artista con el id especificado.
         Si falla o no encuentra al artista, LANZA UNA EXCEPCIÓN.
@@ -29,7 +28,7 @@ class ComunidadDAO:
                 
                 # Mapeamos el JSON recibido al ArtistaDTO
                 return ArtistaDTO(
-                    idArtista=str(data.get('id')),
+                    idArtista=data.get('id'),
                     nombreUsuario=data.get('nombreusuario'),
                     rutaFoto=data.get('rutafoto'),
                     esNovedad=data.get('esnovedad'),
@@ -61,7 +60,7 @@ class ComunidadDAO:
         
         # 4. Construimos el DTO final
         return ComunidadDTO(
-            idComunidad=str(modelo.idComunidad),
+            idComunidad=modelo.idComunidad,
             artista=artista_dto,
             nombreComunidad=modelo.nombreComunidad,
             descComunidad=modelo.descComunidad,
@@ -71,7 +70,7 @@ class ComunidadDAO:
             numUsuarios=num_miem,   
             palabrasVetadas=palabras 
         )
-
+        
     @staticmethod
     def get_comunidades_usuario(usuario: int) -> List[ComunidadDTO]:
         """
@@ -83,7 +82,7 @@ class ComunidadDAO:
         
         # Convertimos cada modelo encontrado a DTO y lo devolvemos
         return [ComunidadDAO._to_dto(c) for c in comunidades]
-
+    
     @staticmethod
     def get_all_comunidades() -> List[ComunidadDTO]:
         # Pide los modelos a la BD
@@ -102,6 +101,9 @@ class ComunidadDAO:
         'palabrasVetadas': ','.join(datos.get('palabrasVetadas', [])) 
         }
         
+        if Comunidad.objects.filter(idArtista=datos.get('idArtista')).exists():
+            raise Exception("Este artista ya tiene una comunidad creada.")
+        
         # Crea el modelo en la BD
         # **datos es un truco para "desempaquetar" un diccionario
         nueva_comunidad = Comunidad.objects.create(**datosModelo)
@@ -110,7 +112,7 @@ class ComunidadDAO:
         return ComunidadDAO._to_dto(nueva_comunidad)
 
     @staticmethod
-    def get_comunidad_especifica(comunidad: str) -> ComunidadDTO:
+    def get_comunidad_especifica(comunidad: int) -> ComunidadDTO:
         """
         Busca UNA comunidad específica por su ID.
         """
@@ -122,9 +124,9 @@ class ComunidadDAO:
             return ComunidadDAO._to_dto(modelo)
         except Comunidad.DoesNotExist:
             raise Exception(f"Comunidad con id {comunidad} no encontrada.")
-        
+
     @staticmethod
-    def actualizar_comunidad(comunidad: str, datos: dict) -> ComunidadDTO:
+    def actualizar_comunidad(comunidad: int, datos: dict) -> ComunidadDTO:
         """
         Actualiza una comunidad específica.
         """
@@ -148,9 +150,9 @@ class ComunidadDAO:
             return ComunidadDAO._to_dto(comunidad)
         except Comunidad.DoesNotExist:
             raise Exception(f"Comunidad con id {comunidad} no encontrada.")
-        
+
     @staticmethod
-    def eliminar_comunidad(comunidad: str):
+    def eliminar_comunidad(comunidad: int):
         """
         Borra una comunidad por su ID.
         """

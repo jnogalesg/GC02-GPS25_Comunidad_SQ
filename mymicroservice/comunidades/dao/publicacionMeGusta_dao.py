@@ -13,7 +13,7 @@ class PublicacionMeGustaDAO:
         )
 
     @staticmethod
-    def dar_megusta(id_publicacion: str, id_usuario: str) -> PublicacionMeGustaDTO:
+    def dar_megusta(id_publicacion: int, id_usuario: int) -> PublicacionMeGustaDTO:
         """
         Crea un registro de 'Me Gusta', verificando antes si es miembro.
         """
@@ -42,34 +42,34 @@ class PublicacionMeGustaDAO:
         return PublicacionMeGustaDAO._to_dto(nuevo_like)
 
     @staticmethod
-    def quitar_megusta(publicacion: str, id_usuario: str):
+    def quitar_megusta(id_publicacion: int, id_usuario: int):
         """
         Borra el registro de 'Me Gusta'.
         """
         try:
             like = PublicacionMeGusta.objects.get(
-                idPublicacion_id=publicacion, 
+                idPublicacion_id=id_publicacion, 
                 idUsuario=id_usuario
             )
             like.delete()
         except PublicacionMeGusta.DoesNotExist:
-            raise Exception(f"El usuario {id_usuario} no le ha dado 'Me Gusta' a la publicación {publicacion}.")
+            raise Exception(f"El usuario {id_usuario} no le ha dado 'Me Gusta' a la publicación {id_publicacion}.")
             
     @staticmethod
-    def contar_likes(publicacion: str) -> int:
+    def contar_likes(id_publicacion: int) -> int:
         """
         Devuelve el número total de likes de una publicación.
         (Útil para devolver el contador actualizado)
         """
-        return PublicacionMeGusta.objects.filter(idPublicacion_id=publicacion).count()
+        return PublicacionMeGusta.objects.filter(idPublicacion_id=id_publicacion).count()
     
     @staticmethod
-    def get_likes_de_publicacion(publicacion: str) -> List[PublicacionMeGustaDTO]:
+    def get_likes_de_publicacion(id_publicacion: int) -> List[PublicacionMeGustaDTO]:
         """
         Devuelve la lista de todos los usuarios que dieron like a una publicación.
         """
         # Busamos por el ID de la publicación (usando _id para el string)
-        likes = PublicacionMeGusta.objects.filter(idPublicacion_id=publicacion)
+        likes = PublicacionMeGusta.objects.filter(idPublicacion_id=id_publicacion)
         
         # Convertimos cada modelo a su DTO
         return [PublicacionMeGustaDAO._to_dto(l) for l in likes]
