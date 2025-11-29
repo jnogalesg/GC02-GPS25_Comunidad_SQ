@@ -73,6 +73,18 @@ class ComunidadDAO:
         )
 
     @staticmethod
+    def get_comunidades_usuario(usuario: int) -> List[ComunidadDTO]:
+        """
+        Obtiene la lista de comunidades a las que pertenece un usuario específico.
+        """
+        # Filtramos las comunidades que tengan miembros con ese id de usuario. 
+        # (__ para relacionar la tabla comunidad con comunidadmiembros, utiliza la relación inversa de Django, al ser Comunidad una ForeignKey en ComunidadMiembros)
+        comunidades = Comunidad.objects.filter(comunidadmiembros__idUsuario=usuario)
+        
+        # Convertimos cada modelo encontrado a DTO y lo devolvemos
+        return [ComunidadDAO._to_dto(c) for c in comunidades]
+
+    @staticmethod
     def get_all_comunidades() -> List[ComunidadDTO]:
         # Pide los modelos a la BD
         comunidades_models = Comunidad.objects.all()

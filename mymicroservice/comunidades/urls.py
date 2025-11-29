@@ -1,5 +1,5 @@
 from django.urls import path
-from comunidades.controller.comunidad_controller import ComunidadController
+from comunidades.controller.comunidad_controller import ComunidadController, ComunidadesUsuarioController 
 from comunidades.controller.miembro_controller import MiembroController
 from comunidades.controller.personasVetadas_controller import PersonasVetadasController 
 from comunidades.controller.publicacion_controller import PublicacionController
@@ -13,6 +13,9 @@ urlpatterns = [
     # GET (específica), DELETE(borrar), PUT (actualizar)
     path('<int:idComunidad>/', ComunidadController.as_view()),
     
+    # --- Mis Comunidades (del usuario logueado) ---
+    path('mis-comunidades/<int:idUsuario>/', ComunidadesUsuarioController.as_view()),
+        
     # --- Miembros --- 
     # GET (listar), POST (añadir)
     path('miembros/<int:idComunidad>/', MiembroController.as_view()),
