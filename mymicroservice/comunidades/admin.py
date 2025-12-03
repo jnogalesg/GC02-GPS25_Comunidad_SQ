@@ -6,4 +6,3 @@ admin.site.register(ComunidadMiembros)
 admin.site.register(Publicacion)
 admin.site.register(PublicacionMeGusta)
 admin.site.register(PersonasVetadas)
-

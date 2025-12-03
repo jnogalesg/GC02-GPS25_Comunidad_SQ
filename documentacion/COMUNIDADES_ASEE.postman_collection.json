@@ -1,0 +1,750 @@
+{
+	"info": {
+		"_postman_id": "4d86e067-f046-4cc3-8d5d-ed4230bfa1e7",
+		"name": "COMUNIDADES_ASEE",
+		"description": "### Welcome to Postman! This is your first collection.\n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests  \n• Test your API in real-world scenarios  \n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50021847",
+		"_collection_link": "https://jnogalesye-9533906.postman.co/workspace/ASEE-Microservicios~c7216dfb-ffdc-489a-8b49-148b0d92aa68/collection/50021847-4d86e067-f046-4cc3-8d5d-ed4230bfa1e7?action=share&source=collection_link&creator=50021847"
+	},
+	"item": [
+		{
+			"name": "COMUNIDADES",
+			"item": [
+				{
+					"name": "COMUNIDAD ESPECÍFICA",
+					"item": [
+						{
+							"name": "GET COMUNIDAD ESPECÍFICA",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/comunidad/{{idComunidad}}/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"comunidad",
+										"{{idComunidad}}",
+										""
+									]
+								},
+								"description": "Esta petición permite obtener la información detallada de una comunidad específica dentro del sistema.\n\n**Propósito:**  \nRecuperar los datos de una comunidad identificada por su ID único. Es útil para mostrar información detallada en vistas de perfil de comunidad, paneles administrativos o para validaciones internas.\n\n**Método:** GET  \n**URL:** [<code>http://127.0.0.1:8000/comunidad/{{idComunidad}}</code>](http://127.0.0.1:8000/comunidad/)\n\n**Parámetros utilizados:**\n\n- `baseURL`: Variable de entorno que define la URL base del servidor donde se aloja la API.\n    \n- `idComunidad`: Identificador único de la comunidad que se desea consultar. Debe ser un valor válido existente en el sistema. Se pasa como parte de la ruta en la URL: `/comunidad/{{idComunidad}}/`.\n    \n\n**Formato de la respuesta esperada:**  \nLa respuesta suele ser un objeto JSON con la información de la comunidad. Un ejemplo típico de respuesta podría ser:\n\n``` json\n{\n  \"id\": 123,\n  \"nombre\": \"Comunidad de ejemplo\",\n  \"descripcion\": \"Descripción de la comunidad\",\n  \"fechaCreacion\": \"2024-06-01T12:00:00Z\",\n  \"miembros\": [\n    { \"id\": 1, \"nombre\": \"Usuario 1\" },\n    { \"id\": 2, \"nombre\": \"Usuario 2\" }\n  ],\n  ...otros campos relevantes\n}\n\n ```\n\n**Notas adicionales:**\n\n- Si el `idComunidad` no existe, la API puede devolver un error 404 (No encontrado).\n    \n- Es posible que se requiera autenticación para acceder a este endpoint, dependiendo de la configuración de la API.\n    \n- Revisa los permisos necesarios antes de realizar la consulta.\n    \n\nEsta documentación ayuda a otros desarrolladores a entender cómo utilizar correctamente este endpoint y qué pueden esperar como resultado."
+							},
+							"response": []
+						},
+						{
+							"name": "ACTUALIZAR COMUNIDAD ESPECÍFICA",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "// Indicar en la URL {{idComunidad}} el id de la comunidad que se desea editar\r\n// Campos editables: {nombreComunidad, descComunidad, rutaImagen, palabrasVetadas}\r\n\r\n{\r\n    \"nombreComunidad\": \"Prueba Modificación Comunidad\",\r\n    \"descComunidad\": \"Esto es una prueba de la modificación\",\r\n    \"rutaImagen\": \"https://ejemplo.com/imagen.png\",\r\n    \"palabrasVetadas\": [\"vetada1\",\"vetada2\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/comunidad/{{idComunidad}}/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"comunidad",
+										"{{idComunidad}}",
+										""
+									]
+								},
+								"description": "**Propósito:**  \nEsta petición permite actualizar los datos de una comunidad específica en el sistema. Es útil para modificar información como el nombre, la descripción, la imagen asociada o las palabras vetadas de una comunidad existente.\n\n**Parámetros de la URL:**\n\n- `baseURL`: Variable de entorno que representa la URL base del API.\n    \n- `idComunidad`: Identificador único de la comunidad que se desea editar. Debe indicarse en la ruta de la URL: `/comunidad/{{idComunidad}}/`.\n    \n\n**Método:** PUT  \n**URL:** [<code>http://127.0.0.1:8000/comunidad/{{idComunidad}}</code>](http://127.0.0.1:8000/comunidad/)\n\n**Formato del cuerpo de la solicitud (JSON):**  \nEl cuerpo debe enviarse en formato raw (JSON) e incluir únicamente los campos que se desean modificar. Ejemplo:\n\n``` json\n{\n  \"nombreComunidad\": \"Nuevo nombre\",\n  \"descComunidad\": \"Nueva descripción\",\n  \"rutaImagen\": \"https://ejemplo.com/imagen.png\",\n  \"palabrasVetadas\": [\"palabra1\", \"palabra2\"]\n}\n\n ```\n\n**Campos editables:**\n\n- `nombreComunidad` (string): Nombre de la comunidad.\n    \n- `descComunidad` (string): Descripción de la comunidad.\n    \n- `rutaImagen` (string, URL): Ruta de la imagen asociada a la comunidad.\n    \n- `palabrasVetadas` (array de strings): Lista de palabras que estarán vetadas en la comunidad.\n    \n\n**Formato de la respuesta esperada:**\n\n- En caso de éxito, la respuesta suele incluir los datos actualizados de la comunidad en formato JSON, por ejemplo:\n    \n    ``` json\n        {\n        \"idComunidad\": 123,\n        \"nombreComunidad\": \"Nuevo nombre\",\n        \"descComunidad\": \"Nueva descripción\",\n        \"rutaImagen\": \"https://ejemplo.com/imagen.png\",\n        \"palabrasVetadas\": [\"palabra1\", \"palabra2\"]\n        }\n    \n     ```\n    \n- En caso de error, se devuelve un mensaje descriptivo y el código de estado HTTP correspondiente.\n    \n\n**Notas:**\n\n- Solo los campos enviados en el cuerpo serán modificados.\n    \n- Es necesario tener permisos adecuados para realizar la actualización.\n    \n- El endpoint puede requerir autenticación según la configuración del API."
+							},
+							"response": []
+						},
+						{
+							"name": "ELIMINAR COMUNIDAD",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "// Introducir el ID de la Comunidad que se desea eliminar en la URL {{idComunidad}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/comunidad/{{idComunidad}}/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"comunidad",
+										"{{idComunidad}}",
+										""
+									]
+								},
+								"description": "**Propósito:**  \nEsta petición elimina una comunidad específica del sistema.\n\n**Método HTTP:**  \nMétodo: DELETE\n\n**URL:** `http://127.0.0.1:8000/comunidad/{{idComunidad}}/`\n\n**Parámetros:**\n\n- `baseURL`: Variable de entorno que define la URL base del API.\n    \n- `idComunidad`: Identificador único de la comunidad que se desea eliminar. Debe ser un valor válido existente en la base de datos.\n    \n\n**Comportamiento esperado:**\n\n- Si la comunidad existe y el usuario tiene permisos suficientes, la comunidad será eliminada permanentemente.\n    \n- Si la eliminación es exitosa, la respuesta suele ser un código 204 (No Content) o 200 (OK) con un mensaje de confirmación.\n    \n\n**Formato de la respuesta:**\n\n- 204 No Content: No se devuelve contenido si la eliminación fue exitosa.\n    \n- 200 OK: Puede devolverse un objeto JSON con información sobre la eliminación, dependiendo de la implementación del backend.\n    \n- 404 Not Found: Si la comunidad con el `idComunidad` especificado no existe.\n    \n- 403 Forbidden: Si el usuario no tiene permisos para eliminar la comunidad.\n    \n- 401 Unauthorized: Si el usuario no está autenticado.\n    \n- 500 Internal Server Error: Si ocurre un error inesperado en el servidor.\n    \n\n**Permisos:**\n\n- Solo usuarios autenticados con permisos de administrador o roles específicos pueden eliminar comunidades.\n    \n\n**Notas:**\n\n- Esta acción es irreversible. Asegúrate de que realmente deseas eliminar la comunidad antes de ejecutar la petición.\n    \n- Revisa la documentación de autenticación para incluir los encabezados necesarios (por ejemplo, tokens de autorización) si aplica."
+							},
+							"response": []
+						}
+					],
+					"description": "Esta carpeta contiene las operaciones específicas sobre una comunidad concreta, como obtener detalles, actualizar información, eliminar la comunidad y gestionar miembros o publicaciones asociadas. Permite la administración detallada de una comunidad individual."
+				},
+				{
+					"name": "GET COMUNIDADES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/comunidad/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								""
+							]
+						},
+						"description": "**Propósito:**  \nEsta petición recupera el listado completo de comunidades registradas en el sistema. Es útil para mostrar todas las comunidades disponibles, junto con información relevante de cada una, como el artista creador, descripción, imagen, fecha de creación, número de publicaciones y usuarios, y palabras vetadas.\n\n**Método:** GET  \n**URL:** [<code>http://127.0.0.1:8000/comunidad/</code>](http://127.0.0.1:8000/comunidad/)\n\n**Parámetros:**\n\n- Esta petición no requiere parámetros de entrada ni en la URL ni en el cuerpo. Simplemente realiza una consulta general a todas las comunidades.\n    \n\n**Formato de la respuesta:**  \nLa respuesta es un array de objetos JSON, donde cada objeto representa una comunidad. Cada objeto tiene la siguiente estructura:\n\n```\n[\n  {\n    \"idComunidad\": \"string\", // Identificador único de la comunidad\n    \"artista\": {\n      \"idArtista\": \"string\", // ID del artista creador\n      \"nombreUsuario\": \"string\", // Nombre de usuario del artista\n      \"rutaFoto\": \"string|null\", // URL de la foto del artista o null\n      \"esNovedad\": true|false, // Si el artista es novedad\n      \"oyentes\": number, // Número de oyentes del artista\n      \"genero\": \"string|null\" // Género musical o null\n    },\n    \"nombreComunidad\": \"string\", // Nombre de la comunidad\n    \"descComunidad\": \"string\", // Descripción de la comunidad\n    \"rutaImagen\": \"string\", // URL de la imagen de la comunidad\n    \"fechaCreacion\": \"string (ISO 8601)\", // Fecha de creación\n    \"numPublicaciones\": number, // Número de publicaciones en la comunidad\n    \"numUsuarios\": number, // Número de usuarios en la comunidad\n    \"palabrasVetadas\": [\"string\", ...] // Palabras vetadas en la comunidad\n  },\n  ...\n]\n\n ```\n\n**Ejemplo de respuesta:**\n\n``` json\n[\n  {\n    \"idComunidad\": \"1\",\n    \"artista\": {\n      \"idArtista\": \"6\",\n      \"nombreUsuario\": \"PruebaArtista1\",\n      \"rutaFoto\": null,\n      \"esNovedad\": true,\n      \"oyentes\": 777,\n      \"genero\": null\n    },\n    \"nombreComunidad\": \"Comunidad de Prueba 1\",\n    \"descComunidad\": \"Esta es la descripción de prueba.\",\n    \"rutaImagen\": \"https://ejemplo.com/imagen.png\",\n    \"fechaCreacion\": \"2025-11-19T18:05:26.555366Z\",\n    \"numPublicaciones\": 0,\n    \"numUsuarios\": 3,\n    \"palabrasVetadas\": [\"spam\", \"anuncio\"]\n  }\n]\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "CREAR UNA COMUNIDAD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idArtista\": 6, // añadir id del artista\r\n    \"nombreComunidad\": \"Comunidad de Prueba\",\r\n    \"descComunidad\": \"Esta es la descripción de prueba.\",\r\n    \"rutaImagen\": \"https://ejemplo.com/imagen.png\",\r\n    \"palabrasVetadas\": [\"spam\", \"anuncio\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								""
+							]
+						},
+						"description": "Esta petición permite crear una nueva comunidad asociada a un artista específico.\n\n**Propósito:**  \nCrear una comunidad proporcionando los datos necesarios en el cuerpo de la solicitud. Es útil para plataformas donde los artistas pueden gestionar y moderar sus propias comunidades.\n\n**Método:** POST  \n**URL:** `{{baseURL}}/comunidad/`\n\n**Cuerpo de la solicitud (JSON):**\n\n- `idArtista` (integer, requerido): ID del artista al que se asociará la comunidad.\n    \n- `nombreComunidad` (string, requerido): Nombre de la comunidad a crear.\n    \n- `descComunidad` (string, requerido): Descripción de la comunidad.\n    \n- `rutaImagen` (string, requerido): URL de la imagen representativa de la comunidad.\n    \n- `palabrasVetadas` (array de strings, opcional): Lista de palabras que estarán vetadas en la comunidad para moderación de contenido.\n    \n\n**Ejemplo de cuerpo:**\n\n``` json\n{\n  \"idArtista\": 6,\n  \"nombreComunidad\": \"Comunidad de Prueba\",\n  \"descComunidad\": \"Esta es la descripción de prueba.\",\n  \"rutaImagen\": \"https://ejemplo.com/imagen.png\",\n  \"palabrasVetadas\": [\"spam\", \"anuncio\"]\n}\n\n ```\n\n**Respuesta esperada (201 Created):**  \nDevuelve un objeto JSON con los detalles de la comunidad creada, incluyendo información del artista asociado y metadatos de la comunidad.\n\n**Ejemplo de respuesta:**\n\n``` json\n{\n  \"idComunidad\": \"3\",\n  \"artista\": {\n    \"idArtista\": \"6\",\n    \"nombreUsuario\": \"PruebaArtista1\",\n    \"rutaFoto\": null,\n    \"esNovedad\": true,\n    \"oyentes\": 777,\n    \"genero\": null\n  },\n  \"nombreComunidad\": \"Comunidad de Prueba 3\",\n  \"descComunidad\": \"Esta es la descripción de prueba.\",\n  \"rutaImagen\": \"https://ejemplo.com/imagen.png\",\n  \"fechaCreacion\": \"2025-11-19T18:05:33.084285Z\",\n  \"numPublicaciones\": 0,\n  \"numUsuarios\": 0,\n  \"palabrasVetadas\": [\"spam\", \"anuncio\"]\n}\n\n ```\n\n**Notas:**\n\n- Todos los campos marcados como requeridos deben ser proporcionados.\n    \n- El campo `palabrasVetadas` es opcional, pero recomendable para moderación.\n    \n- El campo `fechaCreacion` es generado automáticamente por el sistema."
+					},
+					"response": []
+				}
+			],
+			"description": "Esta carpeta agrupa todas las peticiones relacionadas con la gestión de comunidades. Incluye funcionalidades para crear, consultar, actualizar y eliminar comunidades, así como gestionar miembros y publicaciones asociadas a cada comunidad. Es el punto central para administrar la vida y actividad de las comunidades dentro de la plataforma."
+		},
+		{
+			"name": "MIEMBROS COMUNIDAD",
+			"item": [
+				{
+					"name": "GET MIEMBROS COMUNIDAD",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/miembros/{{idComunidad}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"miembros",
+								"{{idComunidad}}",
+								""
+							]
+						},
+						"description": "**Descripción:**  \nEsta petición permite obtener la lista de miembros asociados a una comunidad específica.\n\n**Propósito:**  \nRecupera todos los usuarios que pertenecen a la comunidad identificada por el parámetro `idComunidad`.\n\n**Método:** GET\n\n**URL:** `{{baseURL}}/comunidad/miembros/{{idComunidad}}/`\n\n**Parámetros:**\n\n- `baseURL` (variable de entorno): URL base del servidor de la API.\n    \n- `idComunidad` (path): Identificador único de la comunidad cuyos miembros se desean consultar.\n    \n\n**Autenticación y permisos:**\n\n- El usuario debe tener permisos para consultar los miembros de la comunidad.\n    \n\n**Respuesta esperada:**\n\n- Código 200 OK: Devuelve un array de objetos, cada uno representando un miembro de la comunidad.\n    \n\n**Ejemplo de respuesta (200 OK):**\n\n``` json\n[\n  {\n    \"idUsuario\": 4,\n    \"nombreUsuario\": \"PruebaDespliege\",\n    \"esArtista\": false,\n    \"rutaFoto\": null\n  },\n  {\n    \"idUsuario\": 8,\n    \"nombreUsuario\": \"PruebaMiembro2\",\n    \"esArtista\": false,\n    \"rutaFoto\": null\n  },\n  {\n    \"idUsuario\": 7,\n    \"nombreUsuario\": \"PruebaMiembro1\",\n    \"esArtista\": false,\n    \"rutaFoto\": null\n  }\n]\n\n ```\n\n**Posibles errores:**\n\n- 401 Unauthorized: Token inválido o ausente.\n    \n- 403 Forbidden: El usuario no tiene permisos para acceder a los miembros de la comunidad.\n    \n- 404 Not Found: La comunidad especificada no existe.\n    \n\n**Notas:**\n\n- No requiere cuerpo en la petición.\n    \n- Utiliza variables de entorno para facilitar la reutilización en diferentes entornos."
+					},
+					"response": []
+				},
+				{
+					"name": "AÑADIR MIEMBRO A COMUNIDAD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUsuario\": 7\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/miembros/{{idComunidad}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"miembros",
+								"{{idComunidad}}",
+								""
+							]
+						},
+						"description": "# Añadir Miembro a Comunidad\n\nEsta petición permite agregar un usuario como miembro a una comunidad específica.\n\n---\n\n## Propósito\n\nPermite a un administrador o usuario autorizado añadir un usuario existente a una comunidad determinada, otorgándole los permisos y accesos correspondientes como miembro.\n\n**Método:** POST\n\n**URL:** `{{baseURL}}/comunidad/miembros/{{idComunidad}}`\n\n- `{{baseURL}}`: Variable de entorno que define la URL base de la API.\n    \n- `{{idComunidad}}`: Identificador único de la comunidad a la que se desea añadir el miembro. Debe proporcionarse en la ruta de la URL.\n    \n\n---\n\n## Parámetros\n\n### En la URL\n\n- **idComunidad** (obligatorio):\n    - Tipo: Integer o String (según implementación)\n        \n    - Descripción: ID de la comunidad a la que se añadirá el usuario.\n        \n\n### En el cuerpo (body)\n\n- **idUsuario** (obligatorio):\n    - Tipo: Integer\n        \n    - Descripción: ID del usuario que se desea agregar como miembro de la comunidad.\n        \n- El cuerpo debe enviarse en formato **JSON**.\n    \n\n#### Ejemplo de cuerpo de la solicitud\n\n``` json\n{\n  \"idUsuario\": 1\n}\n\n ```\n\n---\n\n## Autenticación y Permisos\n\n- Es necesario incluir un token de autenticación válido en la cabecera:\n    - `Authorization: Bearer {{token}}`\n        \n- Solo usuarios con permisos adecuados (por ejemplo, administradores de la comunidad) pueden ejecutar esta acción.\n    \n\n---\n\n## Respuesta Esperada\n\n- **Código 200 OK**: El usuario fue añadido correctamente como miembro de la comunidad.\n    \n- **Formato de respuesta (ejemplo):**\n    \n    ``` json\n    {\n    \"success\": true,\n    \"message\": \"Usuario añadido como miembro de la comunidad\",\n    \"miembro\": {\n      \"id\": 123,\n      \"idUsuario\": 1,\n      \"idComunidad\": 10,\n      \"fechaAlta\": \"2024-06-01T12:34:56Z\"\n    }\n    }\n    \n     ```\n    \n\n---\n\n## Posibles Errores\n\n- **401 Unauthorized**: Token de autenticación ausente o inválido.\n    \n- **403 Forbidden**: El usuario autenticado no tiene permisos para añadir miembros a la comunidad.\n    \n- **404 Not Found**: La comunidad o el usuario especificado no existen.\n    \n- **409 Conflict**: El usuario ya es miembro de la comunidad.\n    \n- **400 Bad Request**: Datos de entrada incorrectos o incompletos.\n    \n- **500 Internal Server Error**: Error inesperado en el servidor.\n    \n\n---\n\n## Notas\n\n- Asegúrate de que los IDs proporcionados sean válidos y que el usuario no sea ya miembro de la comunidad.\n    \n- Consulta la documentación general de la API para más detalles sobre autenticación y manejo de errores."
+					},
+					"response": []
+				},
+				{
+					"name": "GET MIEMBRO ESPECÍFICO",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUsuario\": \"4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/miembros/{{idComunidad}}/{{idUsuario}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"miembros",
+								"{{idComunidad}}",
+								"{{idUsuario}}"
+							]
+						},
+						"description": "Este endpoint permite obtener la información detallada de un miembro específico dentro de una comunidad.\n\n- **Método:** GET\n    \n- **URL:** `{{baseURL}}/comunidad/miembros/{{idComunidad}}/{{idUsuario}}`\n    \n\n**Parámetros de ruta:**\n\n- `idComunidad`: Identificador único de la comunidad a la que pertenece el miembro.\n    \n- `idUsuario`: Identificador único del miembro cuya información se desea consultar.\n    \n\n**Respuesta esperada:**  \nDevuelve un objeto JSON con los datos del miembro solicitado, incluyendo información relevante como nombre, correo electrónico, rol dentro de la comunidad, y otros atributos asociados.\n\nUtiliza este endpoint para consultar los detalles de un miembro específico en una comunidad determinada."
+					},
+					"response": []
+				},
+				{
+					"name": "ELIMINAR MIEMBRO",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Permite eliminar a un miembro de una comunidad específica.\r\n// Se indica en la URL el id de la comunidad {{idComunidad}} cuyo miembro se quiere eliminar, y el id del usuario {{idUsuario}} al que eliminar.\r\n"
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/miembros/{{idComunidad}}/{{idUsuario}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"miembros",
+								"{{idComunidad}}",
+								"{{idUsuario}}",
+								""
+							]
+						},
+						"description": "Elimina a un miembro específico de una comunidad.\n\n**Propósito:**  \nEsta petición permite eliminar a un usuario (miembro) de una comunidad determinada. Es útil para gestionar la membresía de comunidades, revocando el acceso o participación de un usuario concreto.\n\n**Método:** DELETE\n\n**URL:** `{{baseURL}}/comunidad/miembros/{{idComunidad}}/{{idUsuario}}/`  \n\n**Parámetros de la URL:**\n\n- `idComunidad`: Identificador único de la comunidad de la que se desea eliminar al miembro. Debe ser un valor válido existente en el sistema.\n    \n- `idUsuario`: Identificador único del usuario que se eliminará de la comunidad. Debe corresponder a un miembro actual de la comunidad indicada.\n    \n\n**Ejemplo de URL:**  \n`{{baseURL}}/comunidad/miembros/123/456/`\n\n**Resultado esperado:**\n\n- Si la operación es exitosa, el usuario será eliminado de la comunidad y la respuesta será un estado HTTP 200 (OK) o 204 (No Content), dependiendo de la implementación.\n    \n- Si alguno de los identificadores no existe o el usuario no pertenece a la comunidad, se devolverá un error adecuado (por ejemplo, 404 Not Found o 400 Bad Request).\n    \n\n**Consideraciones:**\n\n- Esta operación es irreversible: una vez eliminado el usuario, deberá ser añadido nuevamente si se desea restaurar su membresía.\n    \n- Es posible que se requieran permisos de administrador o roles específicos para ejecutar esta acción.\n    \n- Asegúrate de validar los identificadores antes de realizar la petición para evitar errores innecesarios.\n    \n\n**Uso recomendado:**  \nUtiliza este endpoint en flujos de administración de comunidades donde sea necesario gestionar la lista de miembros de forma dinámica y segura."
+					},
+					"response": []
+				},
+				{
+					"name": "GET MIS COMUNIDADES",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"description": "Esta carpeta agrupa los endpoints relacionados con la gestión de miembros dentro de una comunidad. Incluye operaciones para:\n\n- Añadir un usuario como miembro de una comunidad específica.\n    \n- Consultar la lista completa de miembros de una comunidad.\n    \n- Consultar la información de un miembro específico.\n    \n- Eliminar un miembro de una comunidad.\n    \n\n**Parámetros comunes:**\n\n- `idComunidad`: Identificador único de la comunidad sobre la que se realiza la operación. Se utiliza como parte de la URL en todos los endpoints de esta carpeta.\n    \n- `idUsuario` / `idMiembro`: Identificador único del usuario o miembro. Dependiendo de la operación, puede ir en la URL o en el cuerpo de la petición (por ejemplo, al añadir un miembro).\n    \n\n**Contexto y uso:**  \nEstas peticiones permiten administrar la pertenencia de usuarios a comunidades, facilitando la integración de funcionalidades como la gestión de roles, permisos y acceso a recursos comunitarios. Es habitual que estos endpoints requieran autenticación mediante un token Bearer en la cabecera `Authorization`.\n\nConsulta la documentación de cada petición para detalles sobre los parámetros específicos y ejemplos de uso."
+		},
+		{
+			"name": "PALABRAS VETADAS",
+			"item": [
+				{
+					"name": "GET PALABRAS VETADAS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/comunidad/{{idComunidad}}/palabras-vetadas/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"{{idComunidad}}",
+								"palabras-vetadas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AÑADIR PALABRAS",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"palabras\": [\r\n        \"insulto_nuevo\",\r\n        \"spam_feo\",\r\n        \"palabra prohibida 3\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/{{idComunidad}}/palabras-vetadas/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"{{idComunidad}}",
+								"palabras-vetadas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MODIFICAR PALABRAS",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"palabras\": [\r\n        \"anuncio\",\r\n        \"spam\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/{{idComunidad}}/palabras-vetadas/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"{{idComunidad}}",
+								"palabras-vetadas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ELIMINAR PALABRAS",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"palabras\": [\r\n        \"insulto_nuevo\",\r\n        \"spam_feo\",\r\n        \"palabra prohibida 3\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/{{idComunidad}}/palabras-vetadas/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"{{idComunidad}}",
+								"palabras-vetadas",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PUBLICACIONES",
+			"item": [
+				{
+					"name": "ME GUSTA",
+					"item": [
+						{
+							"name": "GET ME GUSTAS",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/comunidad/publicaciones/megusta/{{idPublicacion}}/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"comunidad",
+										"publicaciones",
+										"megusta",
+										"{{idPublicacion}}",
+										""
+									]
+								},
+								"description": "Esta petición permite obtener la lista de usuarios que han dado 'me gusta' a una publicación específica dentro de la comunidad.\n\n**Método:** GET\n\n**URL:** `{{baseURL}}/comunidad/publicaciones/megusta/{{idPublicacion}}/`\n\n**Parámetros:**\n\n- `idPublicacion` (path): Identificador único de la publicación para la cual se desea consultar los 'me gusta'. Debe ser un valor numérico válido.\n    \n\n**Propósito:**  \nDevuelve un listado de usuarios que han dado 'me gusta' a la publicación indicada. Es útil para mostrar la popularidad de una publicación o para obtener información sobre la interacción de los usuarios con el contenido.\n\n**Respuesta esperada:**  \nUn array de objetos, donde cada objeto representa un usuario que ha dado 'me gusta' e incluye información relevante como:\n\n- `idPublicacion`: ID de la publicación.\n    \n- `idUsuario`: ID del usuario que dio 'me gusta'.\n    \n- `fechaMeGusta`: Fecha y hora en que se realizó el 'me gusta'.\n    \n\n**Consideraciones:**\n\n- Es necesario proporcionar un `idPublicacion` válido en la URL.\n    \n- El endpoint responde con código 200 y la lista de usuarios si la publicación existe.\n    \n- Si la publicación no existe o no tiene 'me gusta', la respuesta puede ser un array vacío.\n    \n- No requiere cuerpo en la petición.\n    \n- Puede requerir autenticación dependiendo de la configuración del API.\n    \n\nUtiliza este endpoint para obtener métricas de interacción o para mostrar los usuarios que han interactuado con una publicación específica."
+							},
+							"response": []
+						},
+						{
+							"name": "DAR ME GUSTA",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "// Permite que un miembro de la comunidad de me gusta a una publicación específica.\r\n// Se indica en la URL el id de la publicación a la que se quiere dar me gusta {{idPublicacion}}\r\n\r\n{\r\n    \"idUsuario\": 7  // Indicar ID del usuario que quiere dar me gusta a la publicación\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/comunidad/publicaciones/megusta/{{idPublicacion}}/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"comunidad",
+										"publicaciones",
+										"megusta",
+										"{{idPublicacion}}",
+										""
+									]
+								},
+								"description": "**Propósito:**  \nEsta petición permite registrar que un usuario ha dado \"me gusta\" a una publicación específica dentro de una comunidad. Es útil para contabilizar y mostrar la interacción de los usuarios con las publicaciones.\n\n**Método:** POST  \n**URL:** `{{baseURL}}/comunidad/publicaciones/megusta/{{idPublicacion}}/`\n\n**Parámetros:**\n\n- `baseURL`: Variable de entorno que define la URL base de la API.\n    \n- `idPublicacion`: Identificador único de la publicación a la que se desea dar \"me gusta\". Se indica en la ruta de la URL.\n    \n\n**Cuerpo de la solicitud (JSON):**\n\n- `idUsuario` (integer, requerido): ID del usuario que realiza la acción de \"me gusta\".\n    \n\n**Ejemplo de cuerpo:**\n\n``` json\n{\n  \"idUsuario\": 7\n}\n\n ```\n\n**Respuesta esperada:**\n\n- **Código 200 OK**: Devuelve el número total de \"me gusta\" tras la acción.\n    \n- **Ejemplo de respuesta:**\n    \n\n``` json\n{\n  \"meGusta\": 1\n}\n\n ```\n\n**Notas:**\n\n- Es necesario que tanto el ID de la publicación como el del usuario sean válidos.\n    \n- Utiliza este endpoint para registrar la interacción de los usuarios con las publicaciones en la comunidad."
+							},
+							"response": []
+						},
+						{
+							"name": "QUITAR ME GUSTA",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "// Permite que un miembro de la comunidad quite un me gusta a una publicación específica.\r\n// Se indica en la URL el id de la publicación a la que se quiere dar me gusta {{idPublicacion}}\r\n// PRE: El usuario con {{idUsuario}} debe haber dado me gusta a la publicación previo a su eliminación\r\n\r\n{\r\n    \"idUsuario\": 4\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/comunidad/publicaciones/megusta/{{idPublicacion}}/",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"comunidad",
+										"publicaciones",
+										"megusta",
+										"{{idPublicacion}}",
+										""
+									]
+								},
+								"description": "**Propósito:**  \nEsta petición permite quitar (eliminar) un \"me gusta\" previamente dado por un usuario a una publicación específica dentro de una comunidad. Es útil para gestionar la interacción de los usuarios con las publicaciones y actualizar el conteo de \"me gusta\".\n\n**Método:** DELETE  \n**URL:** `{{baseURL}}/comunidad/publicaciones/megusta/{{idPublicacion}}/`\n\n**Parámetros:**\n\n- `baseURL`: Variable de entorno que define la URL base de la API.\n    \n- `idPublicacion`: Identificador único de la publicación a la que se desea quitar el \"me gusta\". Se indica en la ruta de la URL.\n    \n\n**Cuerpo de la solicitud (JSON):**\n\n- `idUsuario` (integer, requerido): ID del usuario que desea quitar su \"me gusta\" de la publicación. El usuario debe haber dado \"me gusta\" previamente para poder eliminarlo.\n    \n\n**Ejemplo de cuerpo:**\n\n```json\n{\n  \"idUsuario\": 4\n}\n```\n\n**Respuesta esperada:**\n\n- **Código 200 OK**: Devuelve el número total de \"me gusta\" tras la eliminación.\n    \n- **Ejemplo de respuesta:**\n\n```json\n{\n  \"meGusta\": 2\n}\n```\n\n**Notas:**\n\n- Es necesario que el usuario haya dado \"me gusta\" previamente para poder quitarlo.\n    \n- Si el usuario no había dado \"me gusta\", la petición puede devolver un error o simplemente no modificar el conteo, según la implementación.\n    \n- Se recomienda incluir los encabezados de autenticación requeridos si la API lo exige."
+							},
+							"response": []
+						}
+					],
+					"description": "Esta carpeta agrupa los endpoints relacionados con la gestión de 'me gusta' en publicaciones dentro de la comunidad. Permite a los usuarios consultar cuántos 'me gusta' tiene una publicación, añadir un 'me gusta' a una publicación específica y quitar un 'me gusta' previamente dado. Es útil para implementar funcionalidades sociales que permitan a los miembros interactuar con el contenido publicado en la comunidad. Las operaciones principales disponibles son:\n\n- Consultar los 'me gusta' de una publicación.\n- Añadir un 'me gusta' a una publicación.\n- Quitar un 'me gusta' de una publicación.\n\nUtiliza estos endpoints para gestionar la interacción de los usuarios con las publicaciones a través de la funcionalidad de 'me gusta'."
+				},
+				{
+					"name": "GET PUBLICACIONES",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Indicar en la URL {{idComunidad}} el id de la comunidad cuyas publicaciones se quieren consultar obtener."
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/publicaciones/{{idComunidad}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"publicaciones",
+								"{{idComunidad}}",
+								""
+							]
+						},
+						"description": "Esta petición permite obtener la lista de publicaciones de una comunidad específica dentro de la plataforma.\n\n**Método:** GET\n\n**URL:** `{{baseURL}}/comunidad/publicaciones/{{idComunidad}}/`\n\n**Parámetros:**\n\n- `idComunidad` (path): Identificador único de la comunidad para la cual se desean consultar las publicaciones. Debe ser un valor numérico válido.\n    \n\n**Propósito:**  \nDevuelve un listado de publicaciones pertenecientes a la comunidad indicada. Es útil para mostrar el contenido generado por los miembros de una comunidad o para obtener información sobre la actividad dentro de la misma.\n\n**Respuesta esperada:**  \nUn array de objetos, donde cada objeto representa una publicación e incluye información relevante como:\n\n- `idPublicacion`: ID de la publicación.\n    \n- `idComunidad`: ID de la comunidad a la que pertenece la publicación.\n    \n- `idUsuario`: ID del usuario que realizó la publicación.\n    \n- `contenido`: Contenido de la publicación.\n    \n- `fechaPublicacion`: Fecha y hora en que se realizó la publicación.\n    \n\n**Consideraciones:**\n\n- Es necesario proporcionar un `idComunidad` válido en la URL.\n    \n- El endpoint responde con código 200 y la lista de publicaciones si la comunidad existe.\n    \n- Si la comunidad no existe o no tiene publicaciones, la respuesta puede ser un array vacío.\n    \n- No requiere cuerpo en la petición.\n    \n- Puede requerir autenticación dependiendo de la configuración del API.\n    \n\nUtiliza este endpoint para obtener el contenido publicado por los miembros de una comunidad y analizar la actividad dentro de la misma."
+					},
+					"response": []
+				},
+				{
+					"name": "HACER PUBLICACION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Permite hacer una publicación nueva en la comunidad indicada en la URL {{idComunidad}}\r\n\r\n{\r\n    \"titulo\": \"Publicación de prueba\",\r\n    \"contenido\": \"Esto es una publicación de prueba\",\r\n    \"rutaFichero\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/publicaciones/{{idComunidad}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"publicaciones",
+								"{{idComunidad}}",
+								""
+							]
+						},
+						"description": "Permite crear una nueva publicación en la comunidad especificada mediante el identificador {{idComunidad}} en la URL.\n\n**Método:** POST  \n**Endpoint:** `/comunidad/publicaciones/{{idComunidad}}/`\n\n**Parámetros del cuerpo (JSON):**\n\n- `titulo` (string, requerido): Título de la publicación.\n    \n- `contenido` (string, requerido): Contenido de la publicación.\n    \n- `rutaFichero` (string o null, opcional): Ruta del fichero adjunto, si aplica.\n    \n\n**Ejemplo de cuerpo de petición:**\n\n``` json\n{    \n     \"titulo\": \"Publicación de prueba\",\n     \"contenido\": \"Esto es una publicación de prueba\",\n     \"rutaFichero\": null\n}\n\n ```\n\n**Ejemplo de respuesta:**\n\n``` json\n{    \"idPublicacion\": 123,\n     \"idComunidad\": 45,\n     \"titulo\": \"Publicación de prueba\",\n     \"contenido\": \"Esto es una publicación de prueba\",\n     \"rutaFichero\": null,\n     \"fecha\": \"2024-06-10T12:34:56Z\",\n     \"meGusta\": 0\n}\n\n ```\n\n**Respuesta:**  \nDevuelve los datos de la publicación creada, incluyendo su identificador y los campos enviados."
+					},
+					"response": []
+				},
+				{
+					"name": "GET PUBLICACIÓN ESPECÍFICA",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Permite obtener los datos de una publicación específica, en una comunidad específica.\r\n// Se indica en la URL el id de la comunidad {{idComunidad}} y el id de la publicación a consultar {{idPublicacion}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/publicaciones/{{idComunidad}}/{{idPublicacion}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"publicaciones",
+								"{{idComunidad}}",
+								"{{idPublicacion}}",
+								""
+							]
+						},
+						"description": "**Descripción:**  \nPermite obtener los datos de una publicación específica dentro de una comunidad.\n\n**Método:** GET  \n**Endpoint:** `/comunidad/publicaciones/{{idComunidad}}/{{idPublicacion}}/`\n\n**Parámetros de ruta:**\n\n- `idComunidad` (integer, requerido): Identificador de la comunidad.\n    \n- `idPublicacion` (integer, requerido): Identificador de la publicación a consultar.\n    \n\n**Ejemplo de respuesta:**\n\n``` json\n{\n  \"id\": 12,\n  \"idComunidad\": 5,\n  \"titulo\": \"Título de la publicación\",\n  \"contenido\": \"Contenido de la publicación.\",\n  \"rutaFichero\": null,\n  \"fechaCreacion\": \"2024-06-10T12:34:56Z\",\n  \"autor\": {\n    \"id\": 7,\n    \"nombre\": \"Juan Pérez\"\n  }\n}\n\n ```\n\n**Respuesta:**  \nDevuelve los datos completos de la publicación solicitada, incluyendo título, contenido, autor, fecha de creación y cualquier otro campo relevante."
+					},
+					"response": []
+				},
+				{
+					"name": "EDITAR PUBLICACIÓN",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Permite actulizar los datos de una publicación específica, en una comunidad específica.\r\n// Se indica en la URL el id de la comunidad {{idComunidad}} y el id de la publicación a consultar {{idPublicacion}}\r\n// Campos editables: {titulo, contenido, rutaFichero}\r\n{\r\n    \"titulo\": \"Publicación de prueba modificada\",\r\n    \"contenido\": \"Esto es una prueba de modificación\",\r\n    \"rutaFichero\": \"https://ejemplo.com/imagen.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/publicaciones/{{idComunidad}}/{{idPublicacion}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"publicaciones",
+								"{{idComunidad}}",
+								"{{idPublicacion}}",
+								""
+							]
+						},
+						"description": "**Descripción:**\n\nEste endpoint permite obtener los datos de una publicación específica dentro de una comunidad determinada.\n\nSe debe indicar en la URL el identificador de la comunidad (`idComunidad`) y el identificador de la publicación (`idPublicacion`).\n\n**Método:** `GET`\n\n**URL:** `/comunidad/publicaciones/{{idComunidad}}/{{idPublicacion}}`\n\n**Parámetros de ruta:**\n\n- `idComunidad` (string, requerido): ID de la comunidad a la que pertenece la publicación.\n    \n- `idPublicacion` (string, requerido): ID de la publicación a consultar.\n    \n\n**Cuerpo de la petición:**  \nNo requiere cuerpo. El cuerpo debe estar vacío.\n\n**Ejemplo de respuesta exitosa (200):**\n\n``` json\n{\n  \"id\": \"12345\",\n  \"titulo\": \"Título de la publicación\",\n  \"contenido\": \"Contenido detallado de la publicación.\",\n  \"autor\": {\n    \"id\": \"67890\",\n    \"nombre\": \"Nombre del autor\"\n  },\n  \"fechaCreacion\": \"2024-06-10T12:34:56Z\",\n  \"comentarios\": [\n    {\n      \"id\": \"c1\",\n      \"texto\": \"Comentario de ejemplo\",\n      \"autor\": {\n        \"id\": \"u2\",\n        \"nombre\": \"Usuario 2\"\n      },\n      \"fecha\": \"2024-06-10T13:00:00Z\"\n    }\n  ]\n}\n\n ```\n\n**Respuestas posibles:**\n\n- `200 OK`: Publicación encontrada y retornada correctamente.\n    \n- `404 Not Found`: No se encontró la publicación o la comunidad indicada.\n    \n- `401 Unauthorized`: No tiene permisos para acceder a la publicación.\n    \n\n**Notas:**\n\n- Asegúrese de tener los permisos necesarios para consultar publicaciones en la comunidad indicada.\n    \n- Los campos de la respuesta pueden variar según la implementación."
+					},
+					"response": []
+				},
+				{
+					"name": "ELIMINAR PUBLICACIÓN",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Permite eliminar una publicación específica, en una comunidad específica.\r\n// Se indica en la URL el id de la comunidad {{idComunidad}} y el id de la publicación a consultar {{idPublicacion}}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/publicaciones/{{idComunidad}}/{{idPublicacion}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"publicaciones",
+								"{{idComunidad}}",
+								"{{idPublicacion}}",
+								""
+							]
+						},
+						"description": "**Propósito:**  \nElimina una publicación específica dentro de una comunidad determinada. Utiliza este endpoint para borrar publicaciones que ya no sean relevantes o que deban ser removidas por motivos administrativos.\n\n**MÉTODO:** DELETE\n\n**URL:** `{{baseURL}}/comunidad/publicaciones/{{idComunidad}}/{{idPublicacion}}/`\n\n**Parámetros de ruta:**\n\n- `idComunidad` (string | integer): Identificador único de la comunidad donde se encuentra la publicación.\n    \n- `idPublicacion` (string | integer): Identificador único de la publicación a eliminar.\n    \n\n**Explicación de la respuesta:**\n\n- Si la eliminación es exitosa, el servidor responde con un 1.\n    \n- Si alguno de los identificadores no existe o no tienes permisos, se devolverá un error correspondiente (por ejemplo, 404 Not Found o 403 Forbidden).\n    \n\n**Notas:**\n\n- Esta operación es irreversible. Asegúrate de que realmente deseas eliminar la publicación antes de ejecutar la petición."
+					},
+					"response": []
+				}
+			],
+			"description": "La carpeta \"PUBLICACIONES\" agrupa todos los endpoints relacionados con la gestión de publicaciones dentro de comunidades. Su propósito es centralizar las operaciones necesarias para crear, consultar, modificar y eliminar publicaciones asociadas a una comunidad específica, así como gestionar las interacciones de los usuarios mediante la funcionalidad de 'me gusta'.\n\nOperaciones principales disponibles:\n- Listar todas las publicaciones de una comunidad.\n- Crear una nueva publicación en una comunidad.\n- Obtener los detalles de una publicación específica.\n- Editar el contenido de una publicación existente.\n- Eliminar publicaciones.\n- Gestionar los 'me gusta' de las publicaciones (añadir, quitar y consultar).\n\nEsta carpeta es útil para desarrolladores que necesiten implementar o consumir funcionalidades sociales en comunidades, facilitando la integración y el mantenimiento de las operaciones sobre publicaciones y sus interacciones."
+		},
+		{
+			"name": "PERSONAS VETADAS",
+			"item": [
+				{
+					"name": "GET VETADOS COMUNIDAD",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Permite consultar los miembros vetados de una comunidad específica.\r\n// Se indica en la URL el id de la comunidad {{idComunidad}} cuyos miembros vetados se quieren consultar ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/vetados/{{idComunidad}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"vetados",
+								"{{idComunidad}}",
+								""
+							]
+						},
+						"description": "Esta petición permite consultar la lista de miembros vetados de una comunidad específica.\n\n**Método:** GET\n\n**URL:** `{{baseURL}}/comunidad/vetados/{{idComunidad}}/`\n\n**Parámetros:**\n\n- `idComunidad` (path): Identificador único de la comunidad cuyos miembros vetados se desean consultar. Debe ser un valor numérico válido y se indica en la ruta de la URL.\n    \n\n**Propósito:**  \nDevuelve un listado de usuarios que han sido vetados de la comunidad indicada. Es útil para la administración y moderación de comunidades, permitiendo visualizar y gestionar los usuarios que no pueden participar en la comunidad.\n\n**Ejemplo de respuesta:**\n\n``` json\n{\n    \"idUsuario\": 7,\n    \"idComunidad\": 1,\n    \"fechaVeto\": \"2025-11-20T11:47:54.417708Z\"\n}\n\n ```\n\n**Respuesta esperada:**  \nUn array de objetos, donde cada objeto representa un usuario vetado e incluye información relevante como:\n\n- `idUsuario`: ID del usuario vetado.\n    \n- `nombreUsuario`: Nombre del usuario vetado.\n    \n- `fechaVeto`: Fecha y hora en que se realizó el veto.\n    \n\n**Consideraciones:**\n\n- Es necesario proporcionar un `idComunidad` válido en la URL.\n    \n- El endpoint responde con código 200 y la lista de usuarios vetados si la comunidad existe.\n    \n- Si la comunidad no existe o no tiene usuarios vetados, la respuesta puede ser un array vacío.\n    \n- No requiere cuerpo en la petición.\n    \n- Puede requerir autenticación dependiendo de la configuración del API.\n    \n\nUtiliza este endpoint para obtener información sobre los usuarios vetados y facilitar la gestión de la comunidad."
+					},
+					"response": []
+				},
+				{
+					"name": "VETAR MIEMBRO",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Permite vetar a un miembro de una comunidad específica.\r\n// Se indica en la URL el id de la comunidad {{idComunidad}} cuyos miembro se quiere vetar. \r\n\r\n{\r\n    \"idUsuario\": 7  // id del usuario que queremos vetar de la comunidad\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/vetados/{{idComunidad}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"vetados",
+								"{{idComunidad}}",
+								""
+							]
+						},
+						"description": "Permite vetar (bloquear) a un usuario de una comunidad específica. Esta operación impide que el usuario vetado pueda interactuar o acceder a los recursos de la comunidad indicada.\n\n**MÉTODO: POST**\n\n**URL:** `{{baseURL}}/comunidad/vetados/{{idComunidad}}/`  \n\n**Parámetros:**\n\n- `idComunidad` (en la URL): Identificador numérico de la comunidad donde se desea vetar al usuario.\n    \n- `idUsuario` (en el cuerpo): Identificador numérico del usuario que se desea vetar de la comunidad.\n    \n\n**Cuerpo de la petición (JSON):**\n\n``` json\n{\n  \"idUsuario\": <int> // ID del usuario a vetar\n}\n\n ```\n\n**Propósito:**  \nUtiliza este endpoint para restringir el acceso de un usuario a una comunidad concreta. Es útil para moderación o gestión de miembros.\n\n**Respuestas:**\n\n- `201 Created`: El usuario ha sido vetado correctamente. Ejemplo de respuesta:\n    \n    ``` json\n        {\n          \"idUsuario\": 7,\n          \"idComunidad\": 1,\n          \"fechaVeto\": \"2025-11-20T11:47:54.417708Z\"\n        }\n    \n     ```\n    \n- `400 Bad Request`: Datos inválidos o faltantes.\n    \n- `404 Not Found`: La comunidad o el usuario no existen.\n    \n- `409 Conflict`: El usuario ya está vetado en la comunidad.\n    \n\n**Notas:**\n\n- El endpoint requiere que el usuario autenticado tenga permisos de moderador o administrador en la comunidad.\n    \n- El veto es específico para la comunidad indicada por `idComunidad`."
+					},
+					"response": []
+				},
+				{
+					"name": "QUITAR VETO",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Permite eliminar el veto a un miembro de una comunidad específica.\r\n// Se indica en la URL el id de la comunidad {{idComunidad}} cuyo veto se quiere borrar, y el id del usuario {{idUsuario}} al que quitar el veto.\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/comunidad/vetados/{{idComunidad}}/{{idUsuario}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"comunidad",
+								"vetados",
+								"{{idComunidad}}",
+								"{{idUsuario}}",
+								""
+							]
+						},
+						"description": "Elimina el veto a un miembro de una comunidad específica.\n\n**Propósito:**  \nPermite quitar el estado de vetado a un usuario dentro de una comunidad. Esta operación es útil para restaurar los permisos de participación de un miembro previamente vetado.\n\n**Parámetros de la URL:**\n\n- `idComunidad` (obligatorio): Identificador único de la comunidad de la que se desea eliminar el veto.\n    \n- `idUsuario` (obligatorio): Identificador único del usuario al que se le quitará el veto.\n    \n\n**MÉTODO:** DELETE\n\n**URL:** `{{baseURL}}/comunidad/vetados/123/456/`\n\n**Respuestas posibles:**\n\n- `200 OK`: El veto ha sido eliminado correctamente.\n    \n- `404 Not Found`: No se encontró la comunidad o el usuario especificado, o el usuario no estaba vetado.\n    \n- `401 Unauthorized` o `403 Forbidden`: El usuario autenticado no tiene permisos para realizar esta acción.\n    \n\n**Notas:**\n\n- Es necesario tener permisos de administrador o moderador en la comunidad para ejecutar esta operación.\n    \n- No requiere cuerpo en la petición."
+					},
+					"response": []
+				}
+			],
+			"description": "Esta carpeta agrupa las operaciones relacionadas con la gestión de usuarios vetados en una comunidad. Incluye los endpoints para listar los usuarios vetados, vetar a un miembro y quitar el veto a un usuario. Utiliza estos métodos para administrar el acceso de los miembros a la comunidad y mantener el control sobre los usuarios restringidos. Todas las operaciones requieren los identificadores de la comunidad y del usuario involucrado."
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

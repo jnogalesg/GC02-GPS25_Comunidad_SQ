@@ -48,9 +48,8 @@ class PalabrasVetadasDAO:
         """
         Añade nuevas palabras vetadas a una comunidad específica.
         """
-
+        
         comunidad = Comunidad.objects.get(pk=idComunidad)
-
         # Obtenemos las palabras vetadas actuales
         actuales = PalabrasVetadasDAO._string_to_list(comunidad.palabrasVetadas)
         
@@ -66,9 +65,9 @@ class PalabrasVetadasDAO:
         # Guardamos en BD como string
         comunidad.palabrasVetadas = PalabrasVetadasDAO._list_to_string(lista_final)
         comunidad.save()
-                
+        
         return PalabrasVetadasDTO(palabras=lista_final)
-    
+
     @staticmethod
     def eliminar_palabras_vetadas(idComunidad: int, palabras_borrar: List[str]) -> PalabrasVetadasDTO:
         """

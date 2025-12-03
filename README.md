@@ -1,5 +1,5 @@
 # GC02-GPS25_Comunidad
-Creación del la API y base de datos de Comunidades de la aplicación UnderSounds. - ASEE/GPS 25/26, Ing. Software
+Creación de la base de datos para la API de Comunidad de la aplicación UnderSounds. - GPS 25/26, Ing. Software
 
 **Microservicio de Comunidades (UnderSounds)**
 
@@ -26,8 +26,8 @@ Sigue estos pasos para clonar, instalar y ejecutar el servidor en tu máquina lo
 
 1.  Clona el repositorio (si no lo has hecho):
     ```bash
-    git clone https://github.com/UniExtremadura/GC02-GPS25_Comunidad
-    cd GC02-GPS25_Comunidad
+    git clone https://github.com/jnogalesg/GC02-GPS25_Comunidad
+    cd GC02-GPS25_ComunidadBETA
     ```
 
 2.  Crea un entorno virtual. Esto aísla las dependencias del proyecto.
@@ -84,15 +84,14 @@ python mymicroservice/manage.py createsuperuser
 Una vez instalado y con la base de datos migrada, puedes iniciar el servidor de desarrollo:
 
 ```bash
-python mymicroservice/manage.py runserver
+python mymicroservice/manage.py runserver 0.0.0.0:8084
 ```
 
-El servidor estará corriendo y escuchando en http://127.0.0.1:8000/
+El servidor estará corriendo y escuchando en http://127.0.0.1:8084/
 
 ##### 🔍 Inspección y modificación directa de la base de datos:
 
-Puede realizarse desde el panel de superusuario de Django, a través de la dirección: http://127.0.0.1:8000/admin
-
+Puede realizarse desde el panel de superusuario de Django, a través de la dirección: http://127.0.0.1:8084/admin
 *(Usa el usuario y contraseña que creaste en el paso 3)*
 
 ## 📁 Arquitectura del microservicio
