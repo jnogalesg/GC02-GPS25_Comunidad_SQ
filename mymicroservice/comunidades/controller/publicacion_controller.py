@@ -7,11 +7,15 @@ import traceback
 
 class PublicacionController(APIView):
 
+    errIdPubli = "Falta idPublicacion en la URL"
+    errIdCom = "Falta idComunidad en la URL"
+        
     def get(self, request, idComunidad=None, idPublicacion=None):
         """
         GET /comunidad/publicaciones/{idComunidad}/ (Lista)
         GET /comunidad/publicaciones/{idComunidad}/{idPublicacion}/ (Detalle)
         """
+        
         try:
             if idPublicacion:
                 # Detalle de una publicación
@@ -23,7 +27,7 @@ class PublicacionController(APIView):
                 data = [dataclasses.asdict(d) for d in dtos]
                 return Response(data, status=status.HTTP_200_OK)
             else:
-                return Response({"error": "Falta idComunidad"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": self.errIdCom}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
@@ -32,7 +36,7 @@ class PublicacionController(APIView):
         POST /comunidad/publicaciones/{idComunidad}/
         """
         if not idComunidad:
-             return Response({"error": "Falta idComunidad en la URL"}, status=status.HTTP_400_BAD_REQUEST)
+             return Response({"error": self.errIdCom}, status=status.HTTP_400_BAD_REQUEST)
         
         datos = request.data
         # Validación básica (puedes ampliarla)
@@ -52,7 +56,7 @@ class PublicacionController(APIView):
         (Editar publicación)
         """
         if not idPublicacion:
-             return Response({"error": "Falta idPublicacion en la URL"}, status=status.HTTP_400_BAD_REQUEST)
+             return Response({"error": self.errIdPubli}, status=status.HTTP_400_BAD_REQUEST)
 
         datos_entrada = request.data
         
@@ -71,7 +75,7 @@ class PublicacionController(APIView):
         DELETE /comunidad/publicaciones/{idComunidad}/{idPublicacion}/
         """
         if not idPublicacion:
-            return Response({"error": "Falta idPublicacion"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": self.errIdPubli}, status=status.HTTP_400_BAD_REQUEST)
             
         try:
             PublicacionDAO.eliminar_publicacion(idPublicacion)
