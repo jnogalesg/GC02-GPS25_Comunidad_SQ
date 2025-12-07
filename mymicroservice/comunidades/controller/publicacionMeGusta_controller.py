@@ -7,17 +7,20 @@ import dataclasses
 
 class PublicacionMeGustaController(APIView):
 
+    errIdPubli = "Falta idPublicacion en la URL"
+    errIdUs = "Falta idUsuario en el body"
+
     def post(self, request, idPublicacion=None):
         """
         POST /comunidad/publicaciones/megusta/{idPublicacion}/
         """
         if not idPublicacion:
-            return Response({"error": "Falta idPublicacion en la URL"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": self.errIdPubli}, status=status.HTTP_400_BAD_REQUEST)
 
         # SIMULACIÓN DE AUTH: Leemos el usuario del body
         idUsuario = request.data.get('idUsuario')
         if not idUsuario:
-            return Response({"error": "Falta 'idUsuario' en el body (simulando auth)"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": self.errIdUs}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # 1. Dar Like
@@ -39,7 +42,7 @@ class PublicacionMeGustaController(APIView):
         (Ver quién le dio like)
         """
         if not idPublicacion:
-            return Response({"error": "Falta idPublicacion en la URL"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": self.errIdPubli}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # 1. Pide la lista al DAO
@@ -59,12 +62,11 @@ class PublicacionMeGustaController(APIView):
         (Quitar like - requiere idUsuario en el body también para saber quién lo quita)
         """
         if not idPublicacion:
-            return Response({"error": "Falta idPublicacion en la URL"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": self.errIdPubli}, status=status.HTTP_400_BAD_REQUEST)
 
-        # SIMULACIÓN DE AUTH
         idUsuario = request.data.get('idUsuario')
         if not idUsuario:
-            return Response({"error": "Falta 'idUsuario' en el body para saber de quién quitar el like"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": self.errIdUs}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # 1. Quitar Like
