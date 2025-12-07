@@ -8,6 +8,7 @@ import dataclasses
 class PalabrasVetadasController(APIView):
 
     errIdCom = "Falta errIdComunidad en la URL" # Constante para mensajes de error
+    errPalabras = "Se espera una lista en el campo 'palabras'" # Constante para mensajes de error
     
     def get(self, request, errIdComunidad):
         """
@@ -44,7 +45,7 @@ class PalabrasVetadasController(APIView):
         try:
             nuevas_palabras = request.data.get('palabras', [])
             if not isinstance(nuevas_palabras, list):
-                 return Response({"error": "Se espera una lista en el campo 'palabras'"}, status=status.HTTP_400_BAD_REQUEST)
+                 return Response({"error": self.errPalabras}, status=status.HTTP_400_BAD_REQUEST)
                  
             dto = PalabrasVetadasDAO.add_palabras_vetadas(errIdComunidad, nuevas_palabras)
             return Response(dataclasses.asdict(dto), status=status.HTTP_200_OK)
@@ -67,7 +68,7 @@ class PalabrasVetadasController(APIView):
         try:
             nueva_lista = request.data.get('palabras', [])
             if not isinstance(nueva_lista, list):
-                 return Response({"error": "Se espera una lista en el campo 'palabras'"}, status=status.HTTP_400_BAD_REQUEST)
+                 return Response({"error": self.errPalabras}, status=status.HTTP_400_BAD_REQUEST)
 
             dto = PalabrasVetadasDAO.modificar_palabras_vetadas(errIdComunidad, nueva_lista)
             return Response(dataclasses.asdict(dto), status=status.HTTP_200_OK)
@@ -90,7 +91,7 @@ class PalabrasVetadasController(APIView):
         try:
             a_borrar = request.data.get('palabras', [])
             if not isinstance(a_borrar, list):
-                 return Response({"error": "Se espera una lista en el campo 'palabras'"}, status=status.HTTP_400_BAD_REQUEST)
+                 return Response({"error": self.errPalabras}, status=status.HTTP_400_BAD_REQUEST)
 
             dto = PalabrasVetadasDAO.eliminar_palabras_vetadas(errIdComunidad, a_borrar)
             return Response(dataclasses.asdict(dto), status=status.HTTP_200_OK)
