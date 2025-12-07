@@ -15,7 +15,7 @@ def main():
         try:
             hostname = socket.gethostname()
             local_ip = socket.gethostbyname(hostname)
-        except:
+        except socket.error:
             local_ip = "127.0.0.1"
             
         # Buscamos el puerto (indicado a continuación del comando runserver) 
