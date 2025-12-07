@@ -1,6 +1,7 @@
 from typing import List
 from comunidades.models import PublicacionMeGusta, Publicacion, ComunidadMiembros
 from comunidades.dto.publicacionMeGusta_dto import PublicacionMeGustaDTO
+from comunidades.exceptions import ExternalServiceError, NotFoundError, AlreadyExistsError, MissingParameterError, BusinessRuleError
 
 class PublicacionMeGustaDAO:
 
@@ -22,7 +23,7 @@ class PublicacionMeGustaDAO:
         try:
             publicacion = Publicacion.objects.get(idPublicacion=id_publicacion)
         except Publicacion.DoesNotExist:
-            raise Exception(f"La publicación {id_publicacion} no existe.")
+            raise NotFoundError(f"La publicación {id_publicacion} no existe.")
 
         # 2. VERIFICACIÓN: ¿Es este usuario miembro de esa comunidad?
         es_miembro = ComunidadMiembros.objects.filter(
@@ -32,7 +33,7 @@ class PublicacionMeGustaDAO:
 
         # 3. Si no es miembro, lanzamos un error y bloqueamos el like
         if not es_miembro:
-             raise Exception(f"ACCESO DENEGADO: El usuario {id_usuario} no es miembro de esta comunidad.")
+             raise BusinessRuleError(f"ACCESO DENEGADO: El usuario {id_usuario} no es miembro de esta comunidad.")
 
         # 4. Si pasa el control, creamos el like
         nuevo_like = PublicacionMeGusta.objects.create(
@@ -53,7 +54,7 @@ class PublicacionMeGustaDAO:
             )
             like.delete()
         except PublicacionMeGusta.DoesNotExist:
-            raise Exception(f"El usuario {id_usuario} no le ha dado 'Me Gusta' a la publicación {id_publicacion}.")
+            raise NotFoundError(f"El usuario {id_usuario} no le ha dado 'Me Gusta' a la publicación {id_publicacion}.")
             
     @staticmethod
     def contar_likes(id_publicacion: int) -> int:

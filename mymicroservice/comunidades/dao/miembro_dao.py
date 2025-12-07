@@ -4,6 +4,7 @@ from comunidades.dto.miembro_dto import MiembroDTO
 from typing import List
 from pyexpat import model
 import requests
+from comunidades.exceptions import ExternalServiceError, NotFoundError, AlreadyExistsError, MissingParameterError, BusinessRuleError
 
 USER_SERVICE_URL = settings.USER_MICROSERVICE_URL
 
@@ -16,7 +17,7 @@ class MiembroDAO:
         """
         if not usuario:
             # Si el ID viene vacío, salta una excepción y no hace la llamada
-            raise Exception("Error: falta ID de usuario.")
+            raise MissingParameterError("Error: falta ID de usuario.")
 
         # URL de destino en el microservicio de usuarios
         # Permite obtener la información de un usuario específico por su ID
@@ -38,11 +39,11 @@ class MiembroDAO:
                 )
             else:
                 # Si devuelve 404 o 500, lanzamos excepción.
-                raise Exception(f"Error al obtener usuario {usuario}: El servicio respondió {response.status_code}")
+                raise ExternalServiceError(f"Error al obtener usuario {usuario}: El servicio respondió {response.status_code}")
                 
         except requests.RequestException as e:
             # Si el servidor está caído o hay error de red
-            raise Exception(f"Error de conexión con el microservicio de usuarios: {str(e)}")
+            raise ExternalServiceError(f"Error de conexión con el microservicio de usuarios: {str(e)}")
         
             
     @staticmethod
@@ -81,7 +82,7 @@ class MiembroDAO:
             # Convertimos el modelo encontrado a DTO
             return MiembroDAO._to_dto(miembro)
         except ComunidadMiembros.DoesNotExist:
-            raise Exception(f"El usuario {usuario} no existe o no pertenece a la comunidad {comunidad}.")
+            raise NotFoundError(f"El usuario {usuario} no existe o no pertenece a la comunidad {comunidad}.")
         
     @staticmethod
     def add_miembro(comunidad: int, usuario: int):
@@ -91,15 +92,15 @@ class MiembroDAO:
         
         # si ya existe el miembro en la comunidad, lanza una excepción
         if ComunidadMiembros.objects.filter(idComunidad=comunidad, idUsuario=usuario).exists():
-            raise Exception("El usuario ya es miembro de la comunidad.")
+            raise AlreadyExistsError("El usuario ya es miembro de la comunidad.")
         
         # si el usuario es el creador de la comunidad, lanza una excepción
         if Comunidad.objects.filter(idComunidad=comunidad, idArtista=usuario).exists():
-            raise Exception("El usuario es el creador de la comunidad.")
+            raise BusinessRuleError("El usuario es el creador de la comunidad.")
         
         # si el miembro está vetado de la comunidad, lanza una excepción
         if PersonasVetadas.objects.filter(idComunidad=comunidad, idUsuario=usuario).exists():
-            raise Exception("El usuario está vetado en la comunidad.")
+            raise BusinessRuleError("El usuario está vetado en la comunidad.")
         
         nuevo_miembro = ComunidadMiembros.objects.create(
             idComunidad_id=comunidad,  # se añade _id para asignar directamente el id de la comunidad
@@ -120,4 +121,4 @@ class MiembroDAO:
             miembro.delete()
             # No se devuelve nada, el Controller dará un 204
         except ComunidadMiembros.DoesNotExist:  # si no se encuentra el miembro en la comunidad, salta una excepción
-            raise Exception(f"El usuario {usuario} no es miembro de la comunidad {comunidad}.")
+            raise NotFoundError(f"El usuario {usuario} no es miembro de la comunidad {comunidad}.")

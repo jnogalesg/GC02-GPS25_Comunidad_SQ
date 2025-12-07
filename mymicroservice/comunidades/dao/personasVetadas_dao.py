@@ -2,6 +2,7 @@ from typing import List
 from comunidades.models import PersonasVetadas
 from comunidades.dto.personasVetadas_dto import PersonaVetadaDTO
 from comunidades.dao.miembro_dao import MiembroDAO
+from comunidades.exceptions import ExternalServiceError, NotFoundError, AlreadyExistsError, MissingParameterError, BusinessRuleError
 
 class PersonasVetadasDAO:
 
@@ -35,7 +36,7 @@ class PersonasVetadasDAO:
         '''
         # Verificamos si ya está vetado para evitar error 500 por duplicado
         if PersonasVetadas.objects.filter(idComunidad_id=comunidad, idUsuario=usuario).exists():
-             raise Exception(f"El usuario {usuario} ya está vetado en esta comunidad.")
+             raise AlreadyExistsError(f"El usuario {usuario} ya está vetado en esta comunidad.")
              
         # Si no existe, creamos el veto
         nuevo_veto = PersonasVetadas.objects.create(
@@ -48,7 +49,7 @@ class PersonasVetadasDAO:
             # Eliminamos al miembro de la comunidad (si está en ella)
             MiembroDAO.eliminar_miembro(comunidad, usuario)
             print(f"INFO: Usuario {usuario} expulsado de la comunidad al ser vetado.")
-        except Exception:
+        except NotFoundError:
             # Si el usuario no era miembro, no pasa nada
             pass
         
@@ -64,4 +65,4 @@ class PersonasVetadasDAO:
             
             # Si no se encuetra el veto, se lanza una excepción
         except PersonasVetadas.DoesNotExist:
-            raise Exception(f"El usuario {usuario} no está vetado en la comunidad {comunidad}.")
+            raise NotFoundError(f"El usuario {usuario} no está vetado en la comunidad {comunidad}.")

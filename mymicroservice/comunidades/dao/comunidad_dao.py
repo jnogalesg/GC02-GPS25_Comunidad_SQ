@@ -4,6 +4,7 @@ from comunidades.models import Comunidad
 from comunidades.dto.comunidad_dto import ComunidadDTO
 from typing import List
 from comunidades.dto.artista_dto import ArtistaDTO
+from comunidades.exceptions import ExternalServiceError, NotFoundError, AlreadyExistsError, MissingParameterError, BusinessRuleError
 
 USER_SERVICE_URL = settings.USER_MICROSERVICE_URL
 
@@ -37,11 +38,11 @@ class ComunidadDAO:
                 )
             else:
                 # Si el artista no existe o hay error 404/500
-                raise Exception(f"Error al obtener artista {artista}: El servicio respondió {response.status_code}")
+                raise ExternalServiceError(f"Error al obtener artista {artista}: El servicio respondió {response.status_code}")
                 
         except requests.RequestException as e:
             # Si el servidor está caído o no hay conexión
-            raise Exception(f"Error de conexión con el microservicio de usuarios: {str(e)}")
+            raise ExternalServiceError(f"Error de conexión con el microservicio de usuarios: {str(e)}")
         
     @staticmethod
     def _to_dto(modelo: Comunidad) -> ComunidadDTO:
@@ -102,7 +103,7 @@ class ComunidadDAO:
         }
         
         if Comunidad.objects.filter(idArtista=datos.get('idArtista')).exists():
-            raise Exception("Este artista ya tiene una comunidad creada.")
+            raise AlreadyExistsError("Este artista ya tiene una comunidad creada.")
         
         # Crea el modelo en la BD
         # **datos es un truco para "desempaquetar" un diccionario
@@ -123,7 +124,7 @@ class ComunidadDAO:
             # 2. Traduce y devuelve el DTO
             return ComunidadDAO._to_dto(modelo)
         except Comunidad.DoesNotExist:
-            raise Exception(f"Comunidad con id {comunidad} no encontrada.")
+            raise NotFoundError(f"Comunidad con id {comunidad} no encontrada.")
 
     @staticmethod
     def actualizar_comunidad(comunidad: int, datos: dict) -> ComunidadDTO:
@@ -149,7 +150,7 @@ class ComunidadDAO:
             # 4. Devuelve el DTO actualizado
             return ComunidadDAO._to_dto(comunidad)
         except Comunidad.DoesNotExist:
-            raise Exception(f"Comunidad con id {comunidad} no encontrada.")
+            raise NotFoundError(f"Comunidad con id {comunidad} no encontrada.")
 
     @staticmethod
     def eliminar_comunidad(comunidad: int):
@@ -162,4 +163,4 @@ class ComunidadDAO:
             comunidad.delete()
             # No se devuelve nada, el Controller dará un 204
         except Comunidad.DoesNotExist: # Si no existe la comunidad, habrá una excepción
-            raise Exception(f"Comunidad con id {comunidad} no encontrada.")
+            raise NotFoundError(f"Comunidad con id {comunidad} no encontrada.")

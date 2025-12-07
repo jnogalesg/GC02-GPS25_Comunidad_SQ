@@ -1,12 +1,13 @@
 from typing import List
 from comunidades.models import Comunidad
 from comunidades.dto.palabrasVetadas_dto import PalabrasVetadasDTO
+from comunidades.exceptions import ExternalServiceError, NotFoundError, AlreadyExistsError, MissingParameterError, BusinessRuleError
 
 class PalabrasVetadasDAO:
 
     @staticmethod
     def _string_to_list(cadena: str) -> List[str]:
-        """"
+        """
             Convierte una cadena separada por comas en una lista de palabras.
         """
         if not cadena or cadena.strip() == "":
@@ -32,7 +33,7 @@ class PalabrasVetadasDAO:
         
         # Si la url no tiene idComunidad, lanza excepción
         if not idComunidad:
-            raise Exception("Falta id de la Comunidad")
+            raise MissingParameterError("Falta id de la Comunidad")
         
         # Obtiene la comunidad con el id especificado
         comunidad = Comunidad.objects.get(pk=idComunidad)

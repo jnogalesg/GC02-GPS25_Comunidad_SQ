@@ -2,6 +2,7 @@ from comunidades.models import Publicacion
 from comunidades.dto.publicacion_dto import PublicacionDTO
 from typing import List
 from django.db.models import Count
+from comunidades.exceptions import ExternalServiceError, NotFoundError, AlreadyExistsError, MissingParameterError, BusinessRuleError
 
 class PublicacionDAO:
 
@@ -46,7 +47,7 @@ class PublicacionDAO:
             ).get(idPublicacion=publicacion)
             return PublicacionDAO._to_dto(p)
         except Publicacion.DoesNotExist:
-            raise Exception(f"Publicación {publicacion} no encontrada")
+            raise NotFoundError(f"Publicación {publicacion} no encontrada")
 
     @staticmethod
     def crear_publicacion(datos: dict, idComunidad: int) -> PublicacionDTO:
@@ -87,7 +88,7 @@ class PublicacionDAO:
             return PublicacionDAO._to_dto(publicacion)
             
         except Publicacion.DoesNotExist:
-            raise Exception(f"Publicación {publicacion} no encontrada")
+            raise NotFoundError(f"Publicación {publicacion} no encontrada")
     
     @staticmethod
     def eliminar_publicacion(publicacion: int):
@@ -98,4 +99,4 @@ class PublicacionDAO:
             p = Publicacion.objects.get(idPublicacion=publicacion)
             p.delete()
         except Publicacion.DoesNotExist:
-             raise Exception(f"Publicación {publicacion} no encontrada")
+             raise NotFoundError(f"Publicación {publicacion} no encontrada")
